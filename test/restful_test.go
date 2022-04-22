@@ -6,15 +6,12 @@ import (
 	"testing"
 
 	"github.com/kjhch/go-common/restful"
-	"github.com/kjhch/go-common/util"
 )
 
 func TestResponse(t *testing.T) {
 	resp := &restful.Response{
-		Status:  util.NewPtr(200),
-		Code:    util.NewPtr("KJ0000"),
-		Message: util.NewPtr("ok"),
-		Tips:    util.NewPtr("成功"),
+		Code:    "KJ0000",
+		Message: "ok",
 		Data:    make([]int, 1),
 	}
 	respJson, _ := json.Marshal(resp)
