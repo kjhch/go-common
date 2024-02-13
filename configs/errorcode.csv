@@ -1,5 +1,5 @@
 错误码,中文描述,说明,变量名,状态码,消息
-00000,一切ok,正确执行后的返回,OK,200,OK
+0,一切ok,正确执行后的返回,OK,200,OK
 A0001,用户端错误,一级宏观错误码,ClientErr,400,Client Err
 A0100,用户注册错误,二级宏观错误码,RegistrationErr,400,Registration Err
 A0101,用户未同意隐私协议,,PrivacyPolicyNotAccepted,400,Privacy Policy Not Accepted
@@ -90,6 +90,7 @@ A0602,用户磁盘空间不足,,InsufficientDisk,400,Insufficient Disk
 A0603,用户内存空间不足,,InsufficientRAM,400,Insufficient RAM
 A0604,用户OSS容量不足,,InsufficientOSSSpace,400,Insufficient OSS Space
 A0605,用户配额已用光,蚂蚁森林浇水数或每天抽奖数,OutOfQuota,400,Out Of Quota
+A0606,用户资源不存在,,ResourceNotFound,404,Resource Not Found
 A0700,用户上传文件异常,二级宏观错误码,FileUploadAbnormal,400,File Upload Abnormal
 A0701,用户上传文件类型不匹配,,UnexpectedFileType,400,Unexpected File Type
 A0702,用户上传文件太大,,FileTooLarge,413,File Too Large

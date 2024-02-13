@@ -1,15 +1,13 @@
-package test
+package restful
 
 import (
 	"encoding/json"
 	"fmt"
 	"testing"
-
-	"github.com/kjhch/go-common/restful"
 )
 
 func TestResponse(t *testing.T) {
-	resp := &restful.Response{
+	resp := &Response{
 		Code:    "KJ0000",
 		Message: "ok",
 		Data:    make([]int, 1),
@@ -19,7 +17,7 @@ func TestResponse(t *testing.T) {
 }
 
 func TestPagination(t *testing.T) {
-	p := restful.Pagination{
+	p := Pagination{
 		CurrentPage: new(int),
 		PageSize:    new(int),
 		PageCount:   new(int),
@@ -31,9 +29,18 @@ func TestPagination(t *testing.T) {
 	fmt.Println(string(j))
 }
 
-func TestXxx(t *testing.T) {
-	// 查看『中文』的utf8编码
-	fmt.Printf("%x\n", []byte("中文"))
-	// 查看『中』的unicode编码
-	fmt.Printf("%d %x\n", '中', '中')
+func TestSucceeded(t *testing.T) {
+	t.Log(Succeeded(struct {
+		a int
+		b string
+		c []string
+	}{a: 1, b: "2", c: []string{"test", "111"}}))
+}
+
+func TestFailed(t *testing.T) {
+	t.Log(Failed(ResourceNotFound, map[string]any{
+		"a": 1,
+		"b": "2",
+		"c": []string{"test", "111"},
+	}))
 }
