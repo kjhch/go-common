@@ -65,7 +65,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	f, err := os.Create("../pkg/restful/error.go")
+	f, err := os.Create("../pkg/restful/error.go.bak")
 	if err != nil {
 		panic(err)
 	}
