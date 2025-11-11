@@ -1,0 +1,105 @@
+syntax = "proto3";
+
+option go_package = "../pkg/space/grpcapi;grpcapi";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+service MasterData {
+  rpc Signup(stream SignupRequest) returns(google.protobuf.Empty){}
+  rpc Login(LoginRequest) returns(LoginResponse){}
+  rpc Logout(AuthRequest) returns(google.protobuf.Empty) {}
+  rpc UpdateAccount(stream UpdateAccountRequest) returns(google.protobuf.Empty) {}
+  rpc UpdatePassword(UpdatePasswordRequest) returns(google.protobuf.Empty) {}
+  rpc Authenticate(AuthRequest) returns(AuthResponse) {}
+  rpc Infos(InfosRequest) returns (InfosResponse){}
+}
+
+//------------------------------------------------------------------------------
+
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message LoginResponse {
+  string name = 1;
+  string value = 2;
+  int32 maxAge = 3;
+  string  path = 4;
+  string domain = 5;
+  bool secure = 6;
+  bool httpOnly = 7;
+}
+
+//------------------------------------------------------------------------------
+
+message SignupRequest{
+  oneof data{
+    SignupInfo info = 1;
+    AvatarFile file = 2;
+  }
+}
+
+message SignupInfo {
+  string email = 1;
+  string nickname = 2;
+  string password = 3;
+  string avatarFileName = 4;
+}
+
+message AvatarFile {
+  bytes chunk = 1;
+}
+
+//------------------------------------------------------------------------------
+
+message UpdateAccountRequest {
+  oneof data{
+    UpdateAccountInfo info = 1;
+    AvatarFile file = 2;
+  }
+}
+
+message UpdateAccountInfo{
+  int64 userId = 1;
+  string email = 2;
+  string nickname = 3;
+  string avatarFileName = 4;
+}
+
+//------------------------------------------------------------------------------
+
+message UpdatePasswordRequest{
+  int64 userId = 1;
+  string password = 2;
+}
+
+//------------------------------------------------------------------------------
+
+message AuthRequest{
+  string token = 1;
+}
+
+message AuthResponse{
+  int64 userId = 1;
+  google.protobuf.Timestamp expiresAt = 2;
+}
+
+//------------------------------------------------------------------------------
+
+message InfoResponse{
+  int64 id = 1;
+  string email = 2;
+  string nickname = 3;
+  string avatar = 4;
+  google.protobuf.Timestamp createdAt = 5;
+}
+
+message InfosRequest{
+  repeated int64 userIds = 1;
+}
+
+message InfosResponse{
+  repeated InfoResponse infos = 1;
+}
