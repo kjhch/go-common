@@ -8,11 +8,13 @@ import "google/protobuf/timestamp.proto";
 service MasterData {
   rpc Signup(stream SignupRequest) returns(google.protobuf.Empty){}
   rpc Login(LoginRequest) returns(LoginResponse){}
+  rpc OauthGithubLogin(OauthGithubLoginRequest) returns(LoginResponse){}
   rpc Logout(AuthRequest) returns(google.protobuf.Empty) {}
   rpc UpdateAccount(stream UpdateAccountRequest) returns(google.protobuf.Empty) {}
   rpc UpdatePassword(UpdatePasswordRequest) returns(google.protobuf.Empty) {}
   rpc Authenticate(AuthRequest) returns(AuthResponse) {}
   rpc Infos(InfosRequest) returns (InfosResponse){}
+  rpc Permissions(PermissionsRequest) returns (PermissionsResponse){}
 }
 
 //------------------------------------------------------------------------------
@@ -30,6 +32,12 @@ message LoginResponse {
   string domain = 5;
   bool secure = 6;
   bool httpOnly = 7;
+}
+
+//------------------------------------------------------------------------------
+
+message OauthGithubLoginRequest{
+  string code = 1;
 }
 
 //------------------------------------------------------------------------------
@@ -102,4 +110,14 @@ message InfosRequest{
 
 message InfosResponse{
   repeated InfoResponse infos = 1;
+}
+
+//------------------------------------------------------------------------------
+
+message PermissionsRequest{
+  int64 userId = 1;
+}
+
+message PermissionsResponse{
+  repeated string routes = 1;
 }

@@ -20,13 +20,15 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	MasterData_Signup_FullMethodName         = "/MasterData/Signup"
-	MasterData_Login_FullMethodName          = "/MasterData/Login"
-	MasterData_Logout_FullMethodName         = "/MasterData/Logout"
-	MasterData_UpdateAccount_FullMethodName  = "/MasterData/UpdateAccount"
-	MasterData_UpdatePassword_FullMethodName = "/MasterData/UpdatePassword"
-	MasterData_Authenticate_FullMethodName   = "/MasterData/Authenticate"
-	MasterData_Infos_FullMethodName          = "/MasterData/Infos"
+	MasterData_Signup_FullMethodName           = "/MasterData/Signup"
+	MasterData_Login_FullMethodName            = "/MasterData/Login"
+	MasterData_OauthGithubLogin_FullMethodName = "/MasterData/OauthGithubLogin"
+	MasterData_Logout_FullMethodName           = "/MasterData/Logout"
+	MasterData_UpdateAccount_FullMethodName    = "/MasterData/UpdateAccount"
+	MasterData_UpdatePassword_FullMethodName   = "/MasterData/UpdatePassword"
+	MasterData_Authenticate_FullMethodName     = "/MasterData/Authenticate"
+	MasterData_Infos_FullMethodName            = "/MasterData/Infos"
+	MasterData_Permissions_FullMethodName      = "/MasterData/Permissions"
 )
 
 // MasterDataClient is the client API for MasterData service.
@@ -35,11 +37,13 @@ const (
 type MasterDataClient interface {
 	Signup(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[SignupRequest, emptypb.Empty], error)
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
+	OauthGithubLogin(ctx context.Context, in *OauthGithubLoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 	Logout(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	UpdateAccount(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[UpdateAccountRequest, emptypb.Empty], error)
 	UpdatePassword(ctx context.Context, in *UpdatePasswordRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	Authenticate(ctx context.Context, in *AuthRequest, opts ...grpc.CallOption) (*AuthResponse, error)
 	Infos(ctx context.Context, in *InfosRequest, opts ...grpc.CallOption) (*InfosResponse, error)
+	Permissions(ctx context.Context, in *PermissionsRequest, opts ...grpc.CallOption) (*PermissionsResponse, error)
 }
 
 type masterDataClient struct {
@@ -67,6 +71,16 @@ func (c *masterDataClient) Login(ctx context.Context, in *LoginRequest, opts ...
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(LoginResponse)
 	err := c.cc.Invoke(ctx, MasterData_Login_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *masterDataClient) OauthGithubLogin(ctx context.Context, in *OauthGithubLoginRequest, opts ...grpc.CallOption) (*LoginResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(LoginResponse)
+	err := c.cc.Invoke(ctx, MasterData_OauthGithubLogin_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -126,17 +140,29 @@ func (c *masterDataClient) Infos(ctx context.Context, in *InfosRequest, opts ...
 	return out, nil
 }
 
+func (c *masterDataClient) Permissions(ctx context.Context, in *PermissionsRequest, opts ...grpc.CallOption) (*PermissionsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PermissionsResponse)
+	err := c.cc.Invoke(ctx, MasterData_Permissions_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MasterDataServer is the server API for MasterData service.
 // All implementations must embed UnimplementedMasterDataServer
 // for forward compatibility.
 type MasterDataServer interface {
 	Signup(grpc.ClientStreamingServer[SignupRequest, emptypb.Empty]) error
 	Login(context.Context, *LoginRequest) (*LoginResponse, error)
+	OauthGithubLogin(context.Context, *OauthGithubLoginRequest) (*LoginResponse, error)
 	Logout(context.Context, *AuthRequest) (*emptypb.Empty, error)
 	UpdateAccount(grpc.ClientStreamingServer[UpdateAccountRequest, emptypb.Empty]) error
 	UpdatePassword(context.Context, *UpdatePasswordRequest) (*emptypb.Empty, error)
 	Authenticate(context.Context, *AuthRequest) (*AuthResponse, error)
 	Infos(context.Context, *InfosRequest) (*InfosResponse, error)
+	Permissions(context.Context, *PermissionsRequest) (*PermissionsResponse, error)
 	mustEmbedUnimplementedMasterDataServer()
 }
 
@@ -153,6 +179,9 @@ func (UnimplementedMasterDataServer) Signup(grpc.ClientStreamingServer[SignupReq
 func (UnimplementedMasterDataServer) Login(context.Context, *LoginRequest) (*LoginResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
 }
+func (UnimplementedMasterDataServer) OauthGithubLogin(context.Context, *OauthGithubLoginRequest) (*LoginResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method OauthGithubLogin not implemented")
+}
 func (UnimplementedMasterDataServer) Logout(context.Context, *AuthRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Logout not implemented")
 }
@@ -167,6 +196,9 @@ func (UnimplementedMasterDataServer) Authenticate(context.Context, *AuthRequest)
 }
 func (UnimplementedMasterDataServer) Infos(context.Context, *InfosRequest) (*InfosResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Infos not implemented")
+}
+func (UnimplementedMasterDataServer) Permissions(context.Context, *PermissionsRequest) (*PermissionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Permissions not implemented")
 }
 func (UnimplementedMasterDataServer) mustEmbedUnimplementedMasterDataServer() {}
 func (UnimplementedMasterDataServer) testEmbeddedByValue()                    {}
@@ -210,6 +242,24 @@ func _MasterData_Login_Handler(srv interface{}, ctx context.Context, dec func(in
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MasterDataServer).Login(ctx, req.(*LoginRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MasterData_OauthGithubLogin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(OauthGithubLoginRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MasterDataServer).OauthGithubLogin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MasterData_OauthGithubLogin_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MasterDataServer).OauthGithubLogin(ctx, req.(*OauthGithubLoginRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -293,6 +343,24 @@ func _MasterData_Infos_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
+func _MasterData_Permissions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PermissionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MasterDataServer).Permissions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MasterData_Permissions_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MasterDataServer).Permissions(ctx, req.(*PermissionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // MasterData_ServiceDesc is the grpc.ServiceDesc for MasterData service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -303,6 +371,10 @@ var MasterData_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Login",
 			Handler:    _MasterData_Login_Handler,
+		},
+		{
+			MethodName: "OauthGithubLogin",
+			Handler:    _MasterData_OauthGithubLogin_Handler,
 		},
 		{
 			MethodName: "Logout",
@@ -319,6 +391,10 @@ var MasterData_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Infos",
 			Handler:    _MasterData_Infos_Handler,
+		},
+		{
+			MethodName: "Permissions",
+			Handler:    _MasterData_Permissions_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
