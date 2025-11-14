@@ -1,0 +1,122 @@
+syntax = "proto3";
+
+option go_package = "../pkg/space/grpcapi;grpcapi";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+service UserContent {
+  rpc ListArticles(ListArticlesRequest) returns(ListArticlesResponse){}
+  rpc ArticleDetail(ArticleDetailRequest) returns(ArticleDetailResponse){}
+
+  rpc CommentSectionInfo(CommentSectionInfoRequest) returns(CommentSectionInfoResponse) {}
+  rpc CreateComment(CreateCommentRequest) returns(google.protobuf.Empty) {}
+  rpc DeleteComment(DeleteCommentRequest) returns(google.protobuf.Empty) {}
+  rpc ListComments(ListCommentsRequest) returns(ListCommentsResponse){}
+  rpc ListReplies(ListRepliesRequest) returns(ListRepliesResponse){}
+
+  rpc ScoresStatistics(ScoresStatisticsRequest) returns(ScoresStatisticsResponse){}
+}
+
+//------------------------------------------------------------------------------
+
+message ListArticlesRequest{
+  int64 lastId = 1;
+  int32 limit = 2;
+}
+message ArticleInfo{
+  int64 id = 1;
+  int64 authorId = 2;
+  string tile = 3;
+  google.protobuf.Timestamp postedAt = 4;
+}
+message ListArticlesResponse{
+  repeated ArticleInfo articles = 1;
+  bool hasMore = 2;
+}
+
+//------------------------------------------------------------------------------
+
+message ArticleDetailRequest{
+  int64 articleId = 1;
+}
+message ArticleDetailResponse{
+  ArticleInfo info = 1;
+  string content = 2;
+}
+
+//------------------------------------------------------------------------------
+
+message CommentSectionInfoRequest {
+  int32 subjectType = 1;
+  int64 subjectId = 2;
+}
+message CommentSectionInfoResponse {
+  int64 id = 1;
+  int32 status = 2;
+  int32 commentsCount = 3;
+}
+
+//------------------------------------------------------------------------------
+
+message CreateCommentRequest{
+  int64 userId = 1;
+  string content = 2;
+  int64 commentSectionId = 3;
+  optional int64 replyToCommentId = 4;
+}
+
+//------------------------------------------------------------------------------
+
+message DeleteCommentRequest{
+  int64 userId = 1;
+  string content = 2;
+  int64 commentSectionId = 3;
+  optional int64 replyToCommentId = 4;
+}
+
+//------------------------------------------------------------------------------
+
+message ListCommentsRequest{
+  int64 commentSectionId = 1;
+  int64 lastId = 2;
+  int32 limit = 3;
+}
+message CommentInfo{
+  int64 id = 1;
+  int64 userId = 2;
+  string content = 3;
+  int32  repliesCount = 4;
+  google.protobuf.Timestamp postedAt = 5;
+}
+message ListCommentsResponse{
+  repeated CommentInfo comments = 1;
+  bool hasMore = 2;
+}
+
+//------------------------------------------------------------------------------
+
+message ListRepliesRequest{
+  int64 rootCommentId = 1;
+  int64 lastId = 2;
+  int32 limit = 3;
+}
+message ListRepliesResponse{
+  repeated CommentInfo replies = 1;
+  bool hasMore = 2;
+}
+
+//------------------------------------------------------------------------------
+
+message ScoresStatisticsRequest{
+  oneof data{
+    string filename = 1;
+    File file = 2;
+  }
+}
+message File {
+  bytes chunk = 1;
+}
+message ScoresStatisticsResponse{
+  string link = 1;
+}
