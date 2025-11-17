@@ -89,9 +89,10 @@ var (
 
 	ErrTooManyRequests = NewErr("TOO_MANY_REQS", "请求过于频繁，请稍后再试", int(codes.ResourceExhausted), http.StatusTooManyRequests)
 
-	ErrParseJson         = NewErr("PARSE_JSON_ERR", "服务端数据解析失败，请稍后再试", int(codes.Internal), http.StatusInternalServerError)
-	ErrDatabaseService   = NewErr("DB_SVC_ERR", "数据库服务异常，请稍后再试", int(codes.Internal), http.StatusInternalServerError)
-	ErrCacheService      = NewErr("CACHE_SVC_ERR", "缓存服务异常，请稍后再试", int(codes.Internal), http.StatusInternalServerError)
-	ErrStorageService    = NewErr("STORAGE_SVC_ERR", "存储服务异常，请稍后再试", int(codes.Internal), http.StatusInternalServerError)
-	ErrDownstreamService = NewErr("DOWNSTREAM_SVC_ERR", "下游服务异常，请稍后再试", int(codes.Unavailable), http.StatusServiceUnavailable)
+	ErrParseJson            = NewErr("PARSE_JSON_ERR", "服务端数据解析失败，请稍后再试", int(codes.Internal), http.StatusInternalServerError)
+	ErrDatabaseService      = NewErr("DB_SVC_ERR", "数据库服务异常，请稍后再试", int(codes.Internal), http.StatusInternalServerError)
+	ErrCacheService         = NewErr("CACHE_SVC_ERR", "缓存服务异常，请稍后再试", int(codes.Internal), http.StatusInternalServerError)
+	ErrUnsupportedCacheType = NewErr("UNSUP_CACHE_TYPE", "不支持的缓存类型", int(codes.InvalidArgument), http.StatusInternalServerError)
+	ErrStorageService       = NewErr("STORAGE_SVC_ERR", "存储服务异常，请稍后再试", int(codes.Internal), http.StatusInternalServerError)
+	ErrDownstreamService    = NewErr("DOWNSTREAM_SVC_ERR", "下游服务异常，请稍后再试", int(codes.Unavailable), http.StatusServiceUnavailable)
 )
