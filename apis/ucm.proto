@@ -70,9 +70,7 @@ message CreateCommentRequest{
 
 message DeleteCommentRequest{
   int64 userId = 1;
-  string content = 2;
-  int64 commentSectionId = 3;
-  optional int64 replyToCommentId = 4;
+  int64 commentId = 2;
 }
 
 //------------------------------------------------------------------------------
