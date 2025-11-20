@@ -10,7 +10,7 @@ service UserContent {
   rpc ArticleDetail(ArticleDetailRequest) returns(ArticleDetailResponse){}
 
   rpc CommentSectionInfo(CommentSectionInfoRequest) returns(CommentSectionInfoResponse) {}
-  rpc CreateComment(CreateCommentRequest) returns(google.protobuf.Empty) {}
+  rpc CreateComment(CreateCommentRequest) returns(CreateCommentResponse) {}
   rpc DeleteComment(DeleteCommentRequest) returns(google.protobuf.Empty) {}
   rpc ListComments(ListCommentsRequest) returns(ListCommentsResponse){}
   rpc ListReplies(ListRepliesRequest) returns(ListRepliesResponse){}
@@ -24,14 +24,14 @@ message ListArticlesRequest{
   int64 lastId = 1;
   int32 limit = 2;
 }
-message ArticleInfo{
+message ArticleResponse{
   int64 id = 1;
   int64 authorId = 2;
-  string tile = 3;
+  string title = 3;
   google.protobuf.Timestamp postedAt = 4;
 }
 message ListArticlesResponse{
-  repeated ArticleInfo articles = 1;
+  repeated ArticleResponse articles = 1;
   bool hasMore = 2;
 }
 
@@ -41,7 +41,7 @@ message ArticleDetailRequest{
   int64 articleId = 1;
 }
 message ArticleDetailResponse{
-  ArticleInfo info = 1;
+  ArticleResponse info = 1;
   string content = 2;
 }
 
@@ -66,6 +66,10 @@ message CreateCommentRequest{
   optional int64 replyToCommentId = 4;
 }
 
+message CreateCommentResponse{
+  int64 commentId = 1;
+}
+
 //------------------------------------------------------------------------------
 
 message DeleteCommentRequest{
@@ -80,7 +84,7 @@ message ListCommentsRequest{
   int64 lastId = 2;
   int32 limit = 3;
 }
-message CommentInfo{
+message CommentResponse{
   int64 id = 1;
   int64 userId = 2;
   string content = 3;
@@ -88,7 +92,7 @@ message CommentInfo{
   google.protobuf.Timestamp postedAt = 5;
 }
 message ListCommentsResponse{
-  repeated CommentInfo comments = 1;
+  repeated CommentResponse comments = 1;
   bool hasMore = 2;
 }
 
@@ -99,8 +103,17 @@ message ListRepliesRequest{
   int64 lastId = 2;
   int32 limit = 3;
 }
+message ReplyResponse{
+  int64 id = 1;
+  int64 userId = 2;
+  string content = 3;
+  int32  repliesCount = 4;
+  google.protobuf.Timestamp postedAt = 5;
+  optional int64 replyToCommentId = 6;
+  optional int64 replyToUserId = 7;
+}
 message ListRepliesResponse{
-  repeated CommentInfo replies = 1;
+  repeated ReplyResponse replies = 1;
   bool hasMore = 2;
 }
 

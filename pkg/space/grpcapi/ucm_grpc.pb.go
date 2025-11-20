@@ -37,7 +37,7 @@ type UserContentClient interface {
 	ListArticles(ctx context.Context, in *ListArticlesRequest, opts ...grpc.CallOption) (*ListArticlesResponse, error)
 	ArticleDetail(ctx context.Context, in *ArticleDetailRequest, opts ...grpc.CallOption) (*ArticleDetailResponse, error)
 	CommentSectionInfo(ctx context.Context, in *CommentSectionInfoRequest, opts ...grpc.CallOption) (*CommentSectionInfoResponse, error)
-	CreateComment(ctx context.Context, in *CreateCommentRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	CreateComment(ctx context.Context, in *CreateCommentRequest, opts ...grpc.CallOption) (*CreateCommentResponse, error)
 	DeleteComment(ctx context.Context, in *DeleteCommentRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	ListComments(ctx context.Context, in *ListCommentsRequest, opts ...grpc.CallOption) (*ListCommentsResponse, error)
 	ListReplies(ctx context.Context, in *ListRepliesRequest, opts ...grpc.CallOption) (*ListRepliesResponse, error)
@@ -82,9 +82,9 @@ func (c *userContentClient) CommentSectionInfo(ctx context.Context, in *CommentS
 	return out, nil
 }
 
-func (c *userContentClient) CreateComment(ctx context.Context, in *CreateCommentRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *userContentClient) CreateComment(ctx context.Context, in *CreateCommentRequest, opts ...grpc.CallOption) (*CreateCommentResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(emptypb.Empty)
+	out := new(CreateCommentResponse)
 	err := c.cc.Invoke(ctx, UserContent_CreateComment_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -139,7 +139,7 @@ type UserContentServer interface {
 	ListArticles(context.Context, *ListArticlesRequest) (*ListArticlesResponse, error)
 	ArticleDetail(context.Context, *ArticleDetailRequest) (*ArticleDetailResponse, error)
 	CommentSectionInfo(context.Context, *CommentSectionInfoRequest) (*CommentSectionInfoResponse, error)
-	CreateComment(context.Context, *CreateCommentRequest) (*emptypb.Empty, error)
+	CreateComment(context.Context, *CreateCommentRequest) (*CreateCommentResponse, error)
 	DeleteComment(context.Context, *DeleteCommentRequest) (*emptypb.Empty, error)
 	ListComments(context.Context, *ListCommentsRequest) (*ListCommentsResponse, error)
 	ListReplies(context.Context, *ListRepliesRequest) (*ListRepliesResponse, error)
@@ -163,7 +163,7 @@ func (UnimplementedUserContentServer) ArticleDetail(context.Context, *ArticleDet
 func (UnimplementedUserContentServer) CommentSectionInfo(context.Context, *CommentSectionInfoRequest) (*CommentSectionInfoResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CommentSectionInfo not implemented")
 }
-func (UnimplementedUserContentServer) CreateComment(context.Context, *CreateCommentRequest) (*emptypb.Empty, error) {
+func (UnimplementedUserContentServer) CreateComment(context.Context, *CreateCommentRequest) (*CreateCommentResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateComment not implemented")
 }
 func (UnimplementedUserContentServer) DeleteComment(context.Context, *DeleteCommentRequest) (*emptypb.Empty, error) {
