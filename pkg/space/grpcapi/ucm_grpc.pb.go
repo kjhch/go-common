@@ -41,7 +41,7 @@ type UserContentClient interface {
 	DeleteComment(ctx context.Context, in *DeleteCommentRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	ListComments(ctx context.Context, in *ListCommentsRequest, opts ...grpc.CallOption) (*ListCommentsResponse, error)
 	ListReplies(ctx context.Context, in *ListRepliesRequest, opts ...grpc.CallOption) (*ListRepliesResponse, error)
-	ScoresStatistics(ctx context.Context, in *ScoresStatisticsRequest, opts ...grpc.CallOption) (*ScoresStatisticsResponse, error)
+	ScoresStatistics(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[ScoresStatisticsRequest, ScoresStatisticsResponse], error)
 }
 
 type userContentClient struct {
@@ -122,15 +122,18 @@ func (c *userContentClient) ListReplies(ctx context.Context, in *ListRepliesRequ
 	return out, nil
 }
 
-func (c *userContentClient) ScoresStatistics(ctx context.Context, in *ScoresStatisticsRequest, opts ...grpc.CallOption) (*ScoresStatisticsResponse, error) {
+func (c *userContentClient) ScoresStatistics(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[ScoresStatisticsRequest, ScoresStatisticsResponse], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ScoresStatisticsResponse)
-	err := c.cc.Invoke(ctx, UserContent_ScoresStatistics_FullMethodName, in, out, cOpts...)
+	stream, err := c.cc.NewStream(ctx, &UserContent_ServiceDesc.Streams[0], UserContent_ScoresStatistics_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
-	return out, nil
+	x := &grpc.GenericClientStream[ScoresStatisticsRequest, ScoresStatisticsResponse]{ClientStream: stream}
+	return x, nil
 }
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type UserContent_ScoresStatisticsClient = grpc.ClientStreamingClient[ScoresStatisticsRequest, ScoresStatisticsResponse]
 
 // UserContentServer is the server API for UserContent service.
 // All implementations must embed UnimplementedUserContentServer
@@ -143,7 +146,7 @@ type UserContentServer interface {
 	DeleteComment(context.Context, *DeleteCommentRequest) (*emptypb.Empty, error)
 	ListComments(context.Context, *ListCommentsRequest) (*ListCommentsResponse, error)
 	ListReplies(context.Context, *ListRepliesRequest) (*ListRepliesResponse, error)
-	ScoresStatistics(context.Context, *ScoresStatisticsRequest) (*ScoresStatisticsResponse, error)
+	ScoresStatistics(grpc.ClientStreamingServer[ScoresStatisticsRequest, ScoresStatisticsResponse]) error
 	mustEmbedUnimplementedUserContentServer()
 }
 
@@ -175,8 +178,8 @@ func (UnimplementedUserContentServer) ListComments(context.Context, *ListComment
 func (UnimplementedUserContentServer) ListReplies(context.Context, *ListRepliesRequest) (*ListRepliesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListReplies not implemented")
 }
-func (UnimplementedUserContentServer) ScoresStatistics(context.Context, *ScoresStatisticsRequest) (*ScoresStatisticsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ScoresStatistics not implemented")
+func (UnimplementedUserContentServer) ScoresStatistics(grpc.ClientStreamingServer[ScoresStatisticsRequest, ScoresStatisticsResponse]) error {
+	return status.Errorf(codes.Unimplemented, "method ScoresStatistics not implemented")
 }
 func (UnimplementedUserContentServer) mustEmbedUnimplementedUserContentServer() {}
 func (UnimplementedUserContentServer) testEmbeddedByValue()                     {}
@@ -325,23 +328,12 @@ func _UserContent_ListReplies_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
-func _UserContent_ScoresStatistics_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ScoresStatisticsRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(UserContentServer).ScoresStatistics(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: UserContent_ScoresStatistics_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserContentServer).ScoresStatistics(ctx, req.(*ScoresStatisticsRequest))
-	}
-	return interceptor(ctx, in, info, handler)
+func _UserContent_ScoresStatistics_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(UserContentServer).ScoresStatistics(&grpc.GenericServerStream[ScoresStatisticsRequest, ScoresStatisticsResponse]{ServerStream: stream})
 }
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type UserContent_ScoresStatisticsServer = grpc.ClientStreamingServer[ScoresStatisticsRequest, ScoresStatisticsResponse]
 
 // UserContent_ServiceDesc is the grpc.ServiceDesc for UserContent service.
 // It's only intended for direct use with grpc.RegisterService,
@@ -378,11 +370,13 @@ var UserContent_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "ListReplies",
 			Handler:    _UserContent_ListReplies_Handler,
 		},
+	},
+	Streams: []grpc.StreamDesc{
 		{
-			MethodName: "ScoresStatistics",
-			Handler:    _UserContent_ScoresStatistics_Handler,
+			StreamName:    "ScoresStatistics",
+			Handler:       _UserContent_ScoresStatistics_Handler,
+			ClientStreams: true,
 		},
 	},
-	Streams:  []grpc.StreamDesc{},
 	Metadata: "ucm.proto",
 }

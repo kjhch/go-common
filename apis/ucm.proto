@@ -15,7 +15,7 @@ service UserContent {
   rpc ListComments(ListCommentsRequest) returns(ListCommentsResponse){}
   rpc ListReplies(ListRepliesRequest) returns(ListRepliesResponse){}
 
-  rpc ScoresStatistics(ScoresStatisticsRequest) returns(ScoresStatisticsResponse){}
+  rpc ScoresStatistics(stream ScoresStatisticsRequest) returns(ScoresStatisticsResponse){}
 }
 
 //------------------------------------------------------------------------------
