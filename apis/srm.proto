@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+option go_package = "../pkg/space/grpcapi;grpcapi";
+
+import "google/protobuf/empty.proto";
+//import "google/protobuf/timestamp.proto";
+
+service SubjectRelation {
+  rpc CheckRelations(CheckRelationsRequest) returns(CheckRelationsResponse) {}
+  rpc GetRelationsCounts(GetRelationsCountsRequest) returns(GetRelationsCountsResponse) {}
+  rpc CreateRelation(Relation) returns(google.protobuf.Empty) {}
+  rpc DeleteRelation(Relation) returns(google.protobuf.Empty) {}
+}
+
+//------------------------------------------------------------------------------
+
+message Relation{
+  int32 srcSubjectType = 1;
+  int64 srcSubjectId = 2;
+  int32 relationType = 3;
+  int32 destSubjectType = 4;
+  int64 destSubjectId = 5;
+}
+
+message CheckRelationsRequest{
+  repeated Relation relations = 1;
+}
+
+message CheckRelationsResponse{
+  repeated bool exists = 1;
+}
+
+//------------------------------------------------------------------------------
+
+message RelationCount{
+  int32 srcSubjectType = 1;
+  int32 relationType = 2;
+  int32 destSubjectType = 3;
+  int64 destSubjectId = 4;
+}
+
+message GetRelationsCountsRequest{
+  repeated RelationCount relations = 1;
+}
+
+message GetRelationsCountsResponse{
+  repeated int32 counts = 1;
+}
+
+//------------------------------------------------------------------------------

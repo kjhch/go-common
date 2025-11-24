@@ -35,6 +35,21 @@ func (k *cacheKey) Expiration() time.Duration {
 
 //------------------------------------------------------------------------------
 
+type OrderBy string
+
+const (
+	OrderAsc  OrderBy = "ASC"
+	OrderDesc OrderBy = "DESC"
+)
+
+type CursorPagination struct {
+	LastIdx int64
+	OrderBy OrderBy
+	Limit   int
+}
+
+//------------------------------------------------------------------------------
+
 type RedisDataType int
 
 const (
