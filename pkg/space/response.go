@@ -6,7 +6,7 @@ import (
 )
 
 type Response struct {
-	Code    string `json:"Code,omitempty"`
+	Code    string `json:"code,omitempty"`
 	Message string `json:"msg,omitempty"`
 	Data    any    `json:"data,omitempty"`
 }
