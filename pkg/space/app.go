@@ -26,7 +26,6 @@ func NewApp(configLoader *ConfigLoader, starters []Starter) *App {
 }
 
 func (app *App) Run() {
-	app.configLoader.LoadConfig()
 	for _, v := range app.starters {
 		app.wg.Go(v.Start)
 	}

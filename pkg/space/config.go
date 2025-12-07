@@ -20,13 +20,11 @@ type ConfigLoader struct {
 }
 
 func NewConfigLoader(conf AppConf) *ConfigLoader {
-	return &ConfigLoader{conf: conf}
-}
-
-func (cl *ConfigLoader) LoadConfig() {
+	cl := &ConfigLoader{conf: conf}
 	cl.loadFromFile()
 	cl.loadFromEtcd()
 	errDomain = cl.conf.ErrorDomain()
+	return cl
 }
 
 func (cl *ConfigLoader) loadFromFile() {
