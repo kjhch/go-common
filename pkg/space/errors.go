@@ -8,47 +8,47 @@ import (
 	"net/http"
 )
 
-var ErrDomain = ""
+var errDomain = ""
 
-type BizError interface {
-	error
-	Join(err error) error
-	CustomizeMsg(msg string) BizError
-}
+//type BizError interface {
+//	error
+//	Join(err error) error
+//	CustomizeMsg(msg string) BizError
+//}
 
-type bizErr struct {
+type BizError struct {
 	code       string
 	msg        string
 	grpcStatus codes.Code
 	httpStatus int
 }
 
-func (b *bizErr) Code() string {
+func (b *BizError) Code() string {
 	return b.code
 }
 
-func (b *bizErr) Message() string {
+func (b *BizError) Message() string {
 	return b.msg
 }
 
-func (b *bizErr) HttpStatus() int {
+func (b *BizError) HttpStatus() int {
 	return b.httpStatus
 }
 
-func (b *bizErr) GRPCStatus() *status.Status {
+func (b *BizError) GRPCStatus() *status.Status {
 	return status.New(b.grpcStatus, b.Error())
 }
 
-func (b *bizErr) Error() string {
-	return fmt.Sprintf("%v(%v:%v)", b.msg, ErrDomain, b.code)
+func (b *BizError) Error() string {
+	return fmt.Sprintf("%v(%v:%v)", b.msg, errDomain, b.code)
 }
 
-func (b *bizErr) Join(err error) error {
+func (b *BizError) Join(err error) error {
 	return errors.Join(b, err)
 }
 
-func (b *bizErr) CustomizeMsg(msg string) BizError {
-	return &bizErr{
+func (b *BizError) CustomizeMsg(msg string) *BizError {
+	return &BizError{
 		code:       b.code,
 		msg:        msg,
 		grpcStatus: b.grpcStatus,
@@ -56,8 +56,8 @@ func (b *bizErr) CustomizeMsg(msg string) BizError {
 	}
 }
 
-func NewErr(code, msg string, grpcStatus, httpStatus int) BizError {
-	r := &bizErr{
+func NewErr(code, msg string, grpcStatus, httpStatus int) *BizError {
+	r := &BizError{
 		code:       code,
 		msg:        msg,
 		httpStatus: httpStatus,
@@ -66,15 +66,15 @@ func NewErr(code, msg string, grpcStatus, httpStatus int) BizError {
 	return r
 }
 
-//type ErrOpt func(err *bizErr)
+//type ErrOpt func(err *BizError)
 //
 //func WithErrGrpcStatus(status int) ErrOpt {
-//	return func(err *bizErr) {
+//	return func(err *BizError) {
 //		err.grpcStatus = codes.Code(status)
 //	}
 //}
 //func WithErrHttpStatus(status int) ErrOpt {
-//	return func(err *bizErr) {
+//	return func(err *BizError) {
 //		err.httpStatus = status
 //	}
 //}
