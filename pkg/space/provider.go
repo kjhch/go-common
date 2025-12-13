@@ -2,9 +2,8 @@ package space
 
 import "github.com/google/wire"
 
-var BaseProviderSet = wire.NewSet(NewApp, NewConfigLoader, NewLogger, StartersProvider, NewGrpcServer, NewHttpServer)
-var KafkaProvider = wire.NewSet(NewKafkaListener)
-var NoKafkaProvider = wire.NewSet(wire.Value((*KafkaListener)(nil)))
+var ProviderSet = wire.NewSet(NewApp, NewConfigLoader, NewLogger, StartersProvider, NewGrpcServer, NewHttpServer, NewKafkaListener)
+var ProviderSetWithoutKafka = wire.NewSet(NewApp, NewConfigLoader, NewLogger, StartersProvider, NewGrpcServer, NewHttpServer, wire.Value((*KafkaListener)(nil)))
 
 func StartersProvider(grpcServer *GrpcServer, httpServer *HttpServer, listener *KafkaListener) []Starter {
 	var starters []Starter
