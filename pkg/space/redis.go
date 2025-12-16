@@ -144,6 +144,22 @@ func (rc *RedisCache[T, S]) BatchRenewOrLoad(ctx context.Context, args []struct 
 	return nil
 }
 
+func (rc *RedisCache[T, S]) Delete(ctx context.Context, args ...any) (int, error) {
+	key := rc.CacheKey.Format(args...)
+	result, err := rc.rdb.Del(ctx, key).Result()
+	return int(result), err
+}
+
+func (rc *RedisCache[T, S]) BatchDelete(ctx context.Context, args [][]any) (int, error) {
+	keys := slices.Collect(func(yield func(string) bool) {
+		for _, arg := range args {
+			yield(rc.CacheKey.Format(arg...))
+		}
+	})
+	result, err := rc.rdb.Del(ctx, keys...).Result()
+	return int(result), err
+}
+
 //------------------------------------------------------------------------------
 
 func NewRedisStringCache[T Transformer[string]](
