@@ -3,8 +3,10 @@ package space
 import (
 	"context"
 	"errors"
-	"github.com/segmentio/kafka-go"
 	"sync"
+	"time"
+
+	"github.com/segmentio/kafka-go"
 )
 
 type KafkaRegistrant interface {
@@ -12,6 +14,16 @@ type KafkaRegistrant interface {
 	Brokers() []string
 	GroupId() string
 }
+
+func NewKafkaWriter(registrant KafkaRegistrant) *kafka.Writer {
+	return &kafka.Writer{
+		Addr:                   kafka.TCP(registrant.Brokers()...),
+		Async:                  true, // 异步
+		AllowAutoTopicCreation: true,
+		BatchTimeout:           100 * time.Millisecond,
+	}
+}
+
 type KafkaListener struct {
 	wg     sync.WaitGroup
 	ctx    context.Context
