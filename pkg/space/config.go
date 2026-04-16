@@ -110,8 +110,9 @@ func (cl *ConfigLoader) loadFromEtcd() {
 		panic(err)
 	}
 
-	key := path.Join("/space-conf", cl.Env, cl.injectConf.Meta.AppCode, "app.json")
-	response, err := cli.Get(context.Background(), strings.ToLower(key))
+	key := strings.ToLower(path.Join("/space-conf", cl.Env, cl.injectConf.Meta.AppCode, "app.json"))
+	cl.logger.Info("Watching etcd key: " + key)
+	response, err := cli.Get(context.Background(), key)
 	if err != nil {
 		panic(err)
 	}
@@ -127,6 +128,7 @@ func (cl *ConfigLoader) loadFromEtcd() {
 		rch := cli.Watch(context.Background(), key)
 		for watchResp := range rch {
 			for _, ev := range watchResp.Events {
+				cl.logger.Info(fmt.Sprintf("etcd changed, key: %v, value: %v", ev.Kv.Key, ev.Kv.Value))
 				err = json.Unmarshal(ev.Kv.Value, cl.appConf)
 				if err != nil {
 					fmt.Println("json err", err)
