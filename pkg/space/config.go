@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log/slog"
 	"path"
 	"strings"
 
@@ -55,13 +54,14 @@ type injectConf struct {
 }
 
 type ConfigLoader struct {
+	logger     *Logger
 	appConf    AppConf
 	injectConf injectConf
 	Env        string
 }
 
-func NewConfigLoader(conf AppConf) *ConfigLoader {
-	cl := &ConfigLoader{appConf: conf}
+func NewConfigLoader(conf AppConf, logger *Logger) *ConfigLoader {
+	cl := &ConfigLoader{appConf: conf, logger: logger}
 	cl.loadFromFile()
 	cl.loadFromEtcd()
 	errDomain = cl.injectConf.Meta.AppCode
@@ -95,7 +95,7 @@ func (cl *ConfigLoader) loadFromFile() {
 	if err != nil {
 		panic(err)
 	}
-	slog.Info("Loaded config file:" + viper.ConfigFileUsed())
+	cl.logger.Info("Loaded config file: " + viper.ConfigFileUsed())
 }
 
 func (cl *ConfigLoader) loadFromEtcd() {
@@ -110,7 +110,7 @@ func (cl *ConfigLoader) loadFromEtcd() {
 		panic(err)
 	}
 
-	key := path.Join("/space-appConf", cl.Env, cl.injectConf.Meta.AppCode, "app.json")
+	key := path.Join("/space-conf", cl.Env, cl.injectConf.Meta.AppCode, "app.json")
 	response, err := cli.Get(context.Background(), strings.ToLower(key))
 	if err != nil {
 		panic(err)
