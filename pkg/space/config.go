@@ -49,7 +49,8 @@ type injectConf struct {
 		Endpoint          string
 	}
 	Mq struct {
-		Addr string
+		Addr    string
+		GroupId string
 	}
 }
 
@@ -128,7 +129,7 @@ func (cl *ConfigLoader) loadFromEtcd() {
 		rch := cli.Watch(context.Background(), key)
 		for watchResp := range rch {
 			for _, ev := range watchResp.Events {
-				cl.logger.Info(fmt.Sprintf("etcd changed, key: %v, value: %v", ev.Kv.Key, ev.Kv.Value))
+				cl.logger.Info(fmt.Sprintf("etcd changed, key: %s, value: %s", ev.Kv.Key, ev.Kv.Value))
 				err = json.Unmarshal(ev.Kv.Value, cl.appConf)
 				if err != nil {
 					fmt.Println("json err", err)

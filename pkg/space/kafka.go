@@ -11,7 +11,6 @@ import (
 
 type KafkaRegistrant interface {
 	Handlers() map[string]func(m kafka.Message)
-	GroupId() string
 }
 
 func NewKafkaWriter(cl *ConfigLoader) *kafka.Writer {
@@ -65,7 +64,7 @@ func (kl *KafkaListener) handleTopic(topic string, handler func(m kafka.Message)
 	r := kafka.NewReader(kafka.ReaderConfig{
 		Brokers: []string{kl.cl.injectConf.Mq.Addr},
 		Topic:   topic,
-		GroupID: kl.registrant.GroupId(), // 指定消费者组id
+		GroupID: kl.cl.injectConf.Mq.GroupId, // 指定消费者组id
 		//RebalanceTimeout: time.Second,
 		//MaxBytes: 10e6, // 10MB
 	})
