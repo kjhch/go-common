@@ -9,17 +9,21 @@ import (
 
 type HttpRegistrant interface {
 	Register(server *http.Server)
-	ServerAddr() string
 }
 
 type HttpServer struct {
+	cl         *ConfigLoader
 	logger     *Logger
 	server     *http.Server
 	registrant HttpRegistrant
 }
 
-func NewHttpServer(logger *Logger, registrant HttpRegistrant) *HttpServer {
+func NewHttpServer(cl *ConfigLoader, logger *Logger, registrant HttpRegistrant) *HttpServer {
+	if cl.injectConf.Server.Http.Addr == "" {
+		return nil
+	}
 	return &HttpServer{
+		cl:         cl,
 		logger:     logger,
 		server:     new(http.Server),
 		registrant: registrant,
@@ -27,12 +31,12 @@ func NewHttpServer(logger *Logger, registrant HttpRegistrant) *HttpServer {
 }
 
 func (s *HttpServer) Start() {
-	addr := s.registrant.ServerAddr()
+	addr := s.cl.injectConf.Server.Http.Addr
 	s.registrant.Register(s.server)
 	s.server.Addr = addr
-	s.logger.Info("Http服务已启动", "addr", addr)
+	s.logger.Info("Http服务已启动" + addr)
 	if err := s.server.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
-		s.logger.Error("Http服务运行失败", "addr", addr, "err", err)
+		s.logger.Error("Http服务运行失败"+addr, "err", err)
 		panic(err)
 	}
 	s.logger.Info("Http服务已关闭")

@@ -3,11 +3,19 @@ package space
 import (
 	"context"
 	"errors"
-	"github.com/redis/go-redis/v9"
 	"slices"
 	"sync"
 	"time"
+
+	"github.com/redis/go-redis/v9"
 )
+
+func NewRDB(cl *ConfigLoader) *redis.Client {
+	return redis.NewClient(&redis.Options{
+		Addr: cl.injectConf.Data.Redis.Addr,
+		DB:   cl.injectConf.Data.Redis.Db,
+	})
+}
 
 type Transformer[S any] interface {
 	Transform() (S, error)

@@ -11,13 +11,15 @@ import (
 
 type KafkaRegistrant interface {
 	Handlers() map[string]func(m kafka.Message)
-	Brokers() []string
 	GroupId() string
 }
 
-func NewKafkaWriter(registrant KafkaRegistrant) *kafka.Writer {
+func NewKafkaWriter(cl *ConfigLoader) *kafka.Writer {
+	if cl.injectConf.Mq.Addr == "" {
+		return nil
+	}
 	return &kafka.Writer{
-		Addr:                   kafka.TCP(registrant.Brokers()...),
+		Addr:                   kafka.TCP(cl.injectConf.Mq.Addr),
 		Async:                  true, // 异步
 		AllowAutoTopicCreation: true,
 		BatchTimeout:           100 * time.Millisecond,
@@ -29,16 +31,21 @@ type KafkaListener struct {
 	ctx    context.Context
 	cancel context.CancelFunc
 
+	cl         *ConfigLoader
 	logger     *Logger
 	registrant KafkaRegistrant
 }
 
-func NewKafkaListener(logger *Logger, registrant KafkaRegistrant) *KafkaListener {
+func NewKafkaListener(cl *ConfigLoader, logger *Logger, registrant KafkaRegistrant) *KafkaListener {
+	if cl.injectConf.Mq.Addr == "" {
+		return nil
+	}
 	ctx, cancelFunc := context.WithCancel(context.Background())
 
 	return &KafkaListener{
 		ctx:        ctx,
 		cancel:     cancelFunc,
+		cl:         cl,
 		logger:     logger,
 		registrant: registrant,
 	}
@@ -49,14 +56,14 @@ func (kl *KafkaListener) Start() {
 		kl.wg.Go(func() {
 			kl.handleTopic(topic, handler)
 		})
-		kl.logger.Info("Kafka消费者已启动", "topic", topic)
+		kl.logger.Info("Kafka消费者已启动, 主题: " + topic)
 	}
 	kl.wg.Wait()
 }
 
 func (kl *KafkaListener) handleTopic(topic string, handler func(m kafka.Message)) {
 	r := kafka.NewReader(kafka.ReaderConfig{
-		Brokers: kl.registrant.Brokers(),
+		Brokers: []string{kl.cl.injectConf.Mq.Addr},
 		Topic:   topic,
 		GroupID: kl.registrant.GroupId(), // 指定消费者组id
 		//RebalanceTimeout: time.Second,
@@ -73,7 +80,7 @@ func (kl *KafkaListener) handleTopic(topic string, handler func(m kafka.Message)
 		}
 		handler(msg)
 	}
-	kl.logger.Info("Kafka消费者已关闭", "topic", topic)
+	kl.logger.Info("Kafka消费者已关闭, 主题: " + topic)
 }
 
 func (kl *KafkaListener) Stop() {

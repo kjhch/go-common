@@ -3,9 +3,10 @@ package space
 import (
 	"context"
 	"fmt"
+	"time"
+
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
-	"time"
 )
 
 type CacheKey struct {
@@ -39,6 +40,22 @@ type CursorPagination struct {
 	Limit   int
 }
 
+// ------------------------------------------------------------------------------
+
+func NewPgxDB(cl *ConfigLoader) *pgxpool.Pool {
+	dsn := fmt.Sprintf("host=%v port=%v user=%v password=%v dbname=%v sslmode=disable",
+		cl.injectConf.Data.Database.Host,
+		cl.injectConf.Data.Database.Port,
+		cl.injectConf.Data.Database.User,
+		cl.injectConf.Data.Database.Password,
+		cl.injectConf.Data.Database.Dbname)
+	conn, err := pgxpool.New(context.Background(), dsn)
+	if err != nil {
+		panic(err)
+	}
+	return conn
+}
+
 //------------------------------------------------------------------------------
 
 const txKey = "spaceRepoTx"
@@ -68,7 +85,7 @@ func NewUnitOfWork[T any](
 func (uow *UnitOfWork[T]) WithTx(ctx context.Context, fn func(ctx context.Context) error) error {
 	// 已存在事务：加入
 	if dbqTx := ctx.Value(txKey); dbqTx != nil {
-		uow.logger.Info("[db]已存在事务，加入", "qtx", fmt.Sprintf("%p", dbqTx))
+		uow.logger.Info("[db]已存在事务，加入" + fmt.Sprintf("%p", dbqTx))
 		return fn(ctx)
 	}
 
@@ -80,15 +97,15 @@ func (uow *UnitOfWork[T]) WithTx(ctx context.Context, fn func(ctx context.Contex
 	}
 	defer tx.Rollback(ctx)
 	qtx := uow.db.WithTx(tx)
-	uow.logger.Info("[db]开启事务", "qtx", fmt.Sprintf("%p", qtx))
+	uow.logger.Info("[db]开启事务" + fmt.Sprintf("%p", qtx))
 
 	err = fn(context.WithValue(ctx, txKey, qtx))
 
 	if err != nil {
-		uow.logger.Info("[db]事务失败，回滚", "qtx", fmt.Sprintf("%p", qtx))
+		uow.logger.Info("[db]事务失败，回滚" + fmt.Sprintf("%p", qtx))
 		return err
 	}
-	uow.logger.Info("[db]提交事务", "qtx", fmt.Sprintf("%p", qtx))
+	uow.logger.Info("[db]提交事务" + fmt.Sprintf("%p", qtx))
 	return tx.Commit(ctx)
 }
 

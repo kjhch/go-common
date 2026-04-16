@@ -1,23 +1,28 @@
 package space
 
 import (
-	"google.golang.org/grpc"
 	"net"
+
+	"google.golang.org/grpc"
 )
 
 type GrpcRegistrant interface {
 	Register(s grpc.ServiceRegistrar)
-	ServerAddr() string
 }
 
 type GrpcServer struct {
+	cl         *ConfigLoader
 	logger     *Logger
 	server     *grpc.Server
 	registrant GrpcRegistrant
 }
 
-func NewGrpcServer(logger *Logger, registrant GrpcRegistrant) *GrpcServer {
+func NewGrpcServer(cl *ConfigLoader, logger *Logger, registrant GrpcRegistrant) *GrpcServer {
+	if cl.injectConf.Server.Grpc.Addr == "" {
+		return nil
+	}
 	return &GrpcServer{
+		cl:         cl,
 		logger:     logger,
 		registrant: registrant,
 		server:     grpc.NewServer(),
@@ -25,18 +30,18 @@ func NewGrpcServer(logger *Logger, registrant GrpcRegistrant) *GrpcServer {
 }
 
 func (s *GrpcServer) Start() {
-	addr := s.registrant.ServerAddr()
+	addr := s.cl.injectConf.Server.Grpc.Addr
 	lis, err := net.Listen("tcp", addr)
 	if err != nil {
-		s.logger.Error("Grpc服务监听失败", "addr", addr, "err", err)
+		s.logger.Error("Grpc服务监听失败"+addr, "err", err)
 		panic(err)
 	}
 
 	s.registrant.Register(s.server)
 
-	s.logger.Info("Grpc服务已启动", "addr", addr)
+	s.logger.Info("Grpc服务已启动" + addr)
 	if err = s.server.Serve(lis); err != nil {
-		s.logger.Error("Grpc服务运行失败", "addr", addr, "err", err)
+		s.logger.Error("Grpc服务运行失败"+addr, "err", err)
 		panic(err)
 	}
 	s.logger.Info("Grpc服务已关闭")
