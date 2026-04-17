@@ -4,6 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log/slog"
+	"os"
 	"path"
 	"strings"
 
@@ -17,6 +19,9 @@ type AppConf interface {
 type injectConf struct {
 	Meta struct {
 		AppCode string
+	}
+	Log struct {
+		Level string
 	}
 	Server struct {
 		Http struct {
@@ -55,14 +60,19 @@ type injectConf struct {
 }
 
 type ConfigLoader struct {
-	logger     *Logger
+	logger     *slog.Logger
 	appConf    AppConf
 	injectConf injectConf
 	Env        string
 }
 
-func NewConfigLoader(conf AppConf, logger *Logger) *ConfigLoader {
-	cl := &ConfigLoader{appConf: conf, logger: logger}
+func NewConfigLoader(conf AppConf) *ConfigLoader {
+	cl := &ConfigLoader{
+		appConf: conf,
+		logger: slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
+			AddSource: true,
+		})),
+	}
 	cl.loadFromFile()
 	cl.loadFromEtcd()
 	errDomain = cl.injectConf.Meta.AppCode
