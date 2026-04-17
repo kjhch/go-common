@@ -28,7 +28,7 @@ type DataEvent[T any] struct {
 }
 
 func (de *DataEvent[T]) MarshalBinary() (data []byte, err error) {
-	return json.Marshal(de.EventType)
+	return json.Marshal(de)
 }
 
 func (de *DataEvent[T]) UnmarshalBinary(data []byte) error {
