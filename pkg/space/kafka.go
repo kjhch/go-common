@@ -79,6 +79,11 @@ func (kl *KafkaListener) handleTopic(topic string, handler func(m kafka.Message)
 		}
 		handler(msg)
 	}
+	err := r.Close()
+	if err != nil {
+		kl.logger.Error("Kafka消费者异常退出, 主题: "+topic, "err", err)
+		return
+	}
 	kl.logger.Info("Kafka消费者已关闭, 主题: " + topic)
 }
 
