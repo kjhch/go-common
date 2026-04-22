@@ -3,7 +3,10 @@ package space
 import (
 	"context"
 	"errors"
+	"fmt"
 	"net/http"
+	"slices"
+	"strings"
 	"time"
 )
 
@@ -34,6 +37,7 @@ func (s *HttpServer) Start() {
 	addr := s.cl.injectConf.Server.Http.Addr
 	s.registrant.Register(s.server)
 	s.server.Addr = addr
+	s.server.Handler = s.loggingMiddleware(s.server.Handler)
 	s.logger.Info("Http服务已启动" + addr)
 	if err := s.server.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 		s.logger.Error("Http服务运行失败"+addr, "err", err)
@@ -50,6 +54,27 @@ func (s *HttpServer) Stop() {
 	if err := s.server.Shutdown(ctx); err != nil {
 		s.logger.Error("Http服务关闭失败", "err", err)
 	}
+}
+
+func (s *HttpServer) loggingMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// 请求前逻辑：记录请求URI
+		if reqId := r.Header.Get("x-request-id"); reqId != "" {
+			r = r.WithContext(context.WithValue(r.Context(), KeyRequestID, reqId))
+		}
+
+		if slices.ContainsFunc(s.cl.injectConf.Log.Http.EnabledRoutes, func(s string) bool {
+			splits := strings.Split(s, " ")
+			return splits[0] == r.Method && splits[1] == r.URL.Path
+		}) {
+			s.logger.InfoContext(r.Context(), fmt.Sprintf("[http]method:%s, uri:%s", r.Method, r.RequestURI))
+		}
+
+		// 调用下一个处理器
+		next.ServeHTTP(w, r)
+
+		// 请求后逻辑
+	})
 }
 
 //------------------------------------------------------------------------------

@@ -3,6 +3,8 @@ package space
 import (
 	"context"
 	"errors"
+	"fmt"
+	"slices"
 	"sync"
 	"time"
 
@@ -10,8 +12,9 @@ import (
 )
 
 type KafkaRegistrant interface {
-	Handlers() map[string]func(m kafka.Message)
+	Handlers() map[string]KafkaTopicHandler
 }
+type KafkaTopicHandler = func(ctx context.Context, m kafka.Message) error
 
 func NewKafkaWriter(cl *ConfigLoader) *kafka.Writer {
 	if cl.injectConf.Mq.Addr == "" {
@@ -60,7 +63,7 @@ func (kl *KafkaListener) Start() {
 	kl.wg.Wait()
 }
 
-func (kl *KafkaListener) handleTopic(topic string, handler func(m kafka.Message)) {
+func (kl *KafkaListener) handleTopic(topic string, handler KafkaTopicHandler) {
 	r := kafka.NewReader(kafka.ReaderConfig{
 		Brokers: []string{kl.cl.injectConf.Mq.Addr},
 		Topic:   topic,
@@ -77,7 +80,20 @@ func (kl *KafkaListener) handleTopic(topic string, handler func(m kafka.Message)
 			}
 			panic(err)
 		}
-		handler(msg)
+		ctx := context.Background()
+		for _, h := range msg.Headers {
+			ctx = context.WithValue(ctx, h.Key, string(h.Value))
+		}
+
+		if slices.Contains(kl.cl.injectConf.Log.Mq.EnabledTopics, msg.Topic) {
+			kl.logger.InfoContext(ctx, fmt.Sprintf("[kafka]收到消息, topic:%s, msg:%s", msg.Topic, msg.Value))
+		}
+
+		err = handler(ctx, msg)
+
+		if err != nil {
+			kl.logger.ErrorContext(ctx, "[kafka]消息处理失败", "err", err)
+		}
 	}
 	err := r.Close()
 	if err != nil {

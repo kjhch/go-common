@@ -22,6 +22,15 @@ type injectConf struct {
 	}
 	Log struct {
 		Level string
+		Http  struct {
+			EnabledRoutes []string
+		}
+		Grpc struct {
+			EnabledMethods []string
+		}
+		Mq struct {
+			EnabledTopics []string
+		}
 	}
 	Server struct {
 		Http struct {
