@@ -11,22 +11,56 @@ import (
 	"github.com/segmentio/kafka-go"
 )
 
-type KafkaRegistrant interface {
-	Handlers() map[string]KafkaTopicHandler
+type KafkaWriter struct {
+	logger *Logger
+	writer *kafka.Writer
 }
-type KafkaTopicHandler = func(ctx context.Context, m kafka.Message) error
 
-func NewKafkaWriter(cl *ConfigLoader) *kafka.Writer {
+func (rcv *KafkaWriter) SendDataEvent(ctx context.Context, topic string, e DataEvent[any]) error {
+	binary, err := e.MarshalBinary()
+	if err != nil {
+		rcv.logger.ErrorContext(ctx, fmt.Sprintf("[mq]事件序列化失败, event:%v", e), "err", err)
+		return ErrParseJson
+	}
+	msg := kafka.Message{
+		Topic: topic,
+		Value: binary,
+	}
+	if requestId, ok := ctx.Value(KeyRequestID).(string); ok && requestId != "" {
+		msg.Headers = []kafka.Header{
+			{Key: KeyRequestID, Value: []byte(requestId)},
+		}
+	}
+	err = rcv.writer.WriteMessages(ctx, msg)
+	if err != nil {
+		rcv.logger.ErrorContext(ctx, fmt.Sprintf("[mq]发送事件失败, event:%v", e), "err", err)
+	}
+	return err
+}
+
+func NewKafkaWriter(cl *ConfigLoader, logger *Logger) *KafkaWriter {
 	if cl.injectConf.Mq.Addr == "" {
 		return nil
 	}
-	return &kafka.Writer{
+	writer := &kafka.Writer{
 		Addr:                   kafka.TCP(cl.injectConf.Mq.Addr),
 		Async:                  true, // 异步
 		AllowAutoTopicCreation: true,
 		BatchTimeout:           100 * time.Millisecond,
 	}
+	return &KafkaWriter{
+		logger: logger,
+		writer: writer,
+	}
 }
+
+//------------------------------------------------------------------------------
+
+type KafkaRegistrant interface {
+	Handlers() map[string]KafkaTopicHandler
+}
+
+type KafkaTopicHandler = func(ctx context.Context, m kafka.Message) error
 
 type KafkaListener struct {
 	wg     sync.WaitGroup

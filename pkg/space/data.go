@@ -85,27 +85,27 @@ func NewUnitOfWork[T any](
 func (uow *UnitOfWork[T]) WithTx(ctx context.Context, fn func(ctx context.Context) error) error {
 	// 已存在事务：加入
 	if dbqTx := ctx.Value(txKey); dbqTx != nil {
-		uow.logger.Info("[db]已存在事务，加入" + fmt.Sprintf("%p", dbqTx))
+		uow.logger.InfoContext(ctx, fmt.Sprintf("[db]已存在事务，加入:%p", dbqTx))
 		return fn(ctx)
 	}
 
 	// 不存在事务：开启
 	tx, err := uow.pool.Begin(ctx)
 	if err != nil {
-		uow.logger.Error("[db]事务开启失败", "err", err)
+		uow.logger.ErrorContext(ctx, "[db]事务开启失败", "err", err)
 		return err
 	}
 	defer tx.Rollback(ctx)
 	qtx := uow.db.WithTx(tx)
-	uow.logger.Info("[db]开启事务" + fmt.Sprintf("%p", qtx))
+	uow.logger.InfoContext(ctx, fmt.Sprintf("[db]开启事务:%p", qtx))
 
 	err = fn(context.WithValue(ctx, txKey, qtx))
 
 	if err != nil {
-		uow.logger.Info("[db]事务失败，回滚" + fmt.Sprintf("%p", qtx))
+		uow.logger.InfoContext(ctx, fmt.Sprintf("[db]事务失败，回滚:%p", qtx))
 		return err
 	}
-	uow.logger.Info("[db]提交事务" + fmt.Sprintf("%p", qtx))
+	uow.logger.InfoContext(ctx, fmt.Sprintf("[db]提交事务:%p", qtx))
 	return tx.Commit(ctx)
 }
 
