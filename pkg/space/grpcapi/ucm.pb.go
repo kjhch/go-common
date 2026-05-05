@@ -293,8 +293,9 @@ func (x *ArticleDetailResponse) GetContent() string {
 
 type SearchArticlesRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	LastIdx       int32                  `protobuf:"varint,1,opt,name=lastIdx,proto3" json:"lastIdx,omitempty"`
-	Limit         int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
+	Keyword       string                 `protobuf:"bytes,1,opt,name=keyword,proto3" json:"keyword,omitempty"`
+	LastIdx       int32                  `protobuf:"varint,2,opt,name=lastIdx,proto3" json:"lastIdx,omitempty"`
+	Limit         int32                  `protobuf:"varint,3,opt,name=limit,proto3" json:"limit,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -327,6 +328,13 @@ func (x *SearchArticlesRequest) ProtoReflect() protoreflect.Message {
 // Deprecated: Use SearchArticlesRequest.ProtoReflect.Descriptor instead.
 func (*SearchArticlesRequest) Descriptor() ([]byte, []int) {
 	return file_ucm_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *SearchArticlesRequest) GetKeyword() string {
+	if x != nil {
+		return x.Keyword
+	}
+	return ""
 }
 
 func (x *SearchArticlesRequest) GetLastIdx() int32 {
@@ -1329,10 +1337,11 @@ const file_ucm_proto_rawDesc = "" +
 	"\tarticleId\x18\x01 \x01(\x03R\tarticleId\"W\n" +
 	"\x15ArticleDetailResponse\x12$\n" +
 	"\x04info\x18\x01 \x01(\v2\x10.ArticleResponseR\x04info\x12\x18\n" +
-	"\acontent\x18\x02 \x01(\tR\acontent\"G\n" +
+	"\acontent\x18\x02 \x01(\tR\acontent\"a\n" +
 	"\x15SearchArticlesRequest\x12\x18\n" +
-	"\alastIdx\x18\x01 \x01(\x05R\alastIdx\x12\x14\n" +
-	"\x05limit\x18\x02 \x01(\x05R\x05limit\"\xab\x01\n" +
+	"\akeyword\x18\x01 \x01(\tR\akeyword\x12\x18\n" +
+	"\alastIdx\x18\x02 \x01(\x05R\alastIdx\x12\x14\n" +
+	"\x05limit\x18\x03 \x01(\x05R\x05limit\"\xab\x01\n" +
 	"\x15SearchArticleResponse\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x1a\n" +
 	"\bauthorId\x18\x02 \x01(\x03R\bauthorId\x12\x14\n" +

@@ -49,8 +49,9 @@ message ArticleDetailResponse{
 //------------------------------------------------------------------------------
 
 message SearchArticlesRequest{
-  int32 lastIdx = 1;
-  int32 limit = 2;
+  string keyword = 1;
+  int32 lastIdx = 2;
+  int32 limit = 3;
 }
 message SearchArticleResponse{
   int64 id = 1;
