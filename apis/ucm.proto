@@ -8,6 +8,7 @@ import "google/protobuf/timestamp.proto";
 service UserContent {
   rpc ListArticles(ListArticlesRequest) returns(ListArticlesResponse){}
   rpc ArticleDetail(ArticleDetailRequest) returns(ArticleDetailResponse){}
+  rpc SearchArticles(SearchArticlesRequest) returns(SearchArticlesResponse){}
 
   rpc CommentSectionInfo(CommentSectionInfoRequest) returns(CommentSectionInfoResponse) {}
   rpc CreateComment(CreateCommentRequest) returns(CreateCommentResponse) {}
@@ -43,6 +44,24 @@ message ArticleDetailRequest{
 message ArticleDetailResponse{
   ArticleResponse info = 1;
   string content = 2;
+}
+
+//------------------------------------------------------------------------------
+
+message SearchArticlesRequest{
+  int32 lastIdx = 1;
+  int32 limit = 2;
+}
+message SearchArticleResponse{
+  int64 id = 1;
+  int64 authorId = 2;
+  string title = 3;
+  string content = 4;
+  google.protobuf.Timestamp postedAt = 5;
+}
+message SearchArticlesResponse{
+  repeated SearchArticleResponse articles = 1;
+  bool hasMore = 2;
 }
 
 //------------------------------------------------------------------------------
