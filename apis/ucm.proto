@@ -7,6 +7,7 @@ import "google/protobuf/timestamp.proto";
 
 service UserContent {
   rpc ListArticles(ListArticlesRequest) returns(ListArticlesResponse){}
+  rpc RecommendArticles(RecommendArticlesRequest) returns(RecommendArticlesResponse){}
   rpc ArticleDetail(ArticleDetailRequest) returns(ArticleDetailResponse){}
   rpc SearchArticles(SearchArticlesRequest) returns(SearchArticlesResponse){}
 
@@ -34,6 +35,12 @@ message ArticleResponse{
 message ListArticlesResponse{
   repeated ArticleResponse articles = 1;
   bool hasMore = 2;
+}
+
+//------------------------------------------------------------------------------
+message  RecommendArticlesRequest{}
+message RecommendArticlesResponse{
+  repeated ArticleResponse articles = 1;
 }
 
 //------------------------------------------------------------------------------

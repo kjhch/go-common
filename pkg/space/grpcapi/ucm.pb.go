@@ -195,6 +195,87 @@ func (x *ListArticlesResponse) GetHasMore() bool {
 	return false
 }
 
+// ------------------------------------------------------------------------------
+type RecommendArticlesRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RecommendArticlesRequest) Reset() {
+	*x = RecommendArticlesRequest{}
+	mi := &file_ucm_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RecommendArticlesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RecommendArticlesRequest) ProtoMessage() {}
+
+func (x *RecommendArticlesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_ucm_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RecommendArticlesRequest.ProtoReflect.Descriptor instead.
+func (*RecommendArticlesRequest) Descriptor() ([]byte, []int) {
+	return file_ucm_proto_rawDescGZIP(), []int{3}
+}
+
+type RecommendArticlesResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Articles      []*ArticleResponse     `protobuf:"bytes,1,rep,name=articles,proto3" json:"articles,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RecommendArticlesResponse) Reset() {
+	*x = RecommendArticlesResponse{}
+	mi := &file_ucm_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RecommendArticlesResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RecommendArticlesResponse) ProtoMessage() {}
+
+func (x *RecommendArticlesResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_ucm_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RecommendArticlesResponse.ProtoReflect.Descriptor instead.
+func (*RecommendArticlesResponse) Descriptor() ([]byte, []int) {
+	return file_ucm_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *RecommendArticlesResponse) GetArticles() []*ArticleResponse {
+	if x != nil {
+		return x.Articles
+	}
+	return nil
+}
+
 type ArticleDetailRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ArticleId     int64                  `protobuf:"varint,1,opt,name=articleId,proto3" json:"articleId,omitempty"`
@@ -204,7 +285,7 @@ type ArticleDetailRequest struct {
 
 func (x *ArticleDetailRequest) Reset() {
 	*x = ArticleDetailRequest{}
-	mi := &file_ucm_proto_msgTypes[3]
+	mi := &file_ucm_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -216,7 +297,7 @@ func (x *ArticleDetailRequest) String() string {
 func (*ArticleDetailRequest) ProtoMessage() {}
 
 func (x *ArticleDetailRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_ucm_proto_msgTypes[3]
+	mi := &file_ucm_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -229,7 +310,7 @@ func (x *ArticleDetailRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ArticleDetailRequest.ProtoReflect.Descriptor instead.
 func (*ArticleDetailRequest) Descriptor() ([]byte, []int) {
-	return file_ucm_proto_rawDescGZIP(), []int{3}
+	return file_ucm_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *ArticleDetailRequest) GetArticleId() int64 {
@@ -249,7 +330,7 @@ type ArticleDetailResponse struct {
 
 func (x *ArticleDetailResponse) Reset() {
 	*x = ArticleDetailResponse{}
-	mi := &file_ucm_proto_msgTypes[4]
+	mi := &file_ucm_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -261,7 +342,7 @@ func (x *ArticleDetailResponse) String() string {
 func (*ArticleDetailResponse) ProtoMessage() {}
 
 func (x *ArticleDetailResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_ucm_proto_msgTypes[4]
+	mi := &file_ucm_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -274,7 +355,7 @@ func (x *ArticleDetailResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ArticleDetailResponse.ProtoReflect.Descriptor instead.
 func (*ArticleDetailResponse) Descriptor() ([]byte, []int) {
-	return file_ucm_proto_rawDescGZIP(), []int{4}
+	return file_ucm_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *ArticleDetailResponse) GetInfo() *ArticleResponse {
@@ -302,7 +383,7 @@ type SearchArticlesRequest struct {
 
 func (x *SearchArticlesRequest) Reset() {
 	*x = SearchArticlesRequest{}
-	mi := &file_ucm_proto_msgTypes[5]
+	mi := &file_ucm_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -314,7 +395,7 @@ func (x *SearchArticlesRequest) String() string {
 func (*SearchArticlesRequest) ProtoMessage() {}
 
 func (x *SearchArticlesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_ucm_proto_msgTypes[5]
+	mi := &file_ucm_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -327,7 +408,7 @@ func (x *SearchArticlesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SearchArticlesRequest.ProtoReflect.Descriptor instead.
 func (*SearchArticlesRequest) Descriptor() ([]byte, []int) {
-	return file_ucm_proto_rawDescGZIP(), []int{5}
+	return file_ucm_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *SearchArticlesRequest) GetKeyword() string {
@@ -364,7 +445,7 @@ type SearchArticleResponse struct {
 
 func (x *SearchArticleResponse) Reset() {
 	*x = SearchArticleResponse{}
-	mi := &file_ucm_proto_msgTypes[6]
+	mi := &file_ucm_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -376,7 +457,7 @@ func (x *SearchArticleResponse) String() string {
 func (*SearchArticleResponse) ProtoMessage() {}
 
 func (x *SearchArticleResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_ucm_proto_msgTypes[6]
+	mi := &file_ucm_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -389,7 +470,7 @@ func (x *SearchArticleResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SearchArticleResponse.ProtoReflect.Descriptor instead.
 func (*SearchArticleResponse) Descriptor() ([]byte, []int) {
-	return file_ucm_proto_rawDescGZIP(), []int{6}
+	return file_ucm_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *SearchArticleResponse) GetId() int64 {
@@ -437,7 +518,7 @@ type SearchArticlesResponse struct {
 
 func (x *SearchArticlesResponse) Reset() {
 	*x = SearchArticlesResponse{}
-	mi := &file_ucm_proto_msgTypes[7]
+	mi := &file_ucm_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -449,7 +530,7 @@ func (x *SearchArticlesResponse) String() string {
 func (*SearchArticlesResponse) ProtoMessage() {}
 
 func (x *SearchArticlesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_ucm_proto_msgTypes[7]
+	mi := &file_ucm_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -462,7 +543,7 @@ func (x *SearchArticlesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SearchArticlesResponse.ProtoReflect.Descriptor instead.
 func (*SearchArticlesResponse) Descriptor() ([]byte, []int) {
-	return file_ucm_proto_rawDescGZIP(), []int{7}
+	return file_ucm_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *SearchArticlesResponse) GetArticles() []*SearchArticleResponse {
@@ -489,7 +570,7 @@ type CommentSectionInfoRequest struct {
 
 func (x *CommentSectionInfoRequest) Reset() {
 	*x = CommentSectionInfoRequest{}
-	mi := &file_ucm_proto_msgTypes[8]
+	mi := &file_ucm_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -501,7 +582,7 @@ func (x *CommentSectionInfoRequest) String() string {
 func (*CommentSectionInfoRequest) ProtoMessage() {}
 
 func (x *CommentSectionInfoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_ucm_proto_msgTypes[8]
+	mi := &file_ucm_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -514,7 +595,7 @@ func (x *CommentSectionInfoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CommentSectionInfoRequest.ProtoReflect.Descriptor instead.
 func (*CommentSectionInfoRequest) Descriptor() ([]byte, []int) {
-	return file_ucm_proto_rawDescGZIP(), []int{8}
+	return file_ucm_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *CommentSectionInfoRequest) GetSubjectType() int32 {
@@ -542,7 +623,7 @@ type CommentSectionInfoResponse struct {
 
 func (x *CommentSectionInfoResponse) Reset() {
 	*x = CommentSectionInfoResponse{}
-	mi := &file_ucm_proto_msgTypes[9]
+	mi := &file_ucm_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -554,7 +635,7 @@ func (x *CommentSectionInfoResponse) String() string {
 func (*CommentSectionInfoResponse) ProtoMessage() {}
 
 func (x *CommentSectionInfoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_ucm_proto_msgTypes[9]
+	mi := &file_ucm_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -567,7 +648,7 @@ func (x *CommentSectionInfoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CommentSectionInfoResponse.ProtoReflect.Descriptor instead.
 func (*CommentSectionInfoResponse) Descriptor() ([]byte, []int) {
-	return file_ucm_proto_rawDescGZIP(), []int{9}
+	return file_ucm_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *CommentSectionInfoResponse) GetId() int64 {
@@ -603,7 +684,7 @@ type CreateCommentRequest struct {
 
 func (x *CreateCommentRequest) Reset() {
 	*x = CreateCommentRequest{}
-	mi := &file_ucm_proto_msgTypes[10]
+	mi := &file_ucm_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -615,7 +696,7 @@ func (x *CreateCommentRequest) String() string {
 func (*CreateCommentRequest) ProtoMessage() {}
 
 func (x *CreateCommentRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_ucm_proto_msgTypes[10]
+	mi := &file_ucm_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -628,7 +709,7 @@ func (x *CreateCommentRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateCommentRequest.ProtoReflect.Descriptor instead.
 func (*CreateCommentRequest) Descriptor() ([]byte, []int) {
-	return file_ucm_proto_rawDescGZIP(), []int{10}
+	return file_ucm_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *CreateCommentRequest) GetUserId() int64 {
@@ -668,7 +749,7 @@ type CreateCommentResponse struct {
 
 func (x *CreateCommentResponse) Reset() {
 	*x = CreateCommentResponse{}
-	mi := &file_ucm_proto_msgTypes[11]
+	mi := &file_ucm_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -680,7 +761,7 @@ func (x *CreateCommentResponse) String() string {
 func (*CreateCommentResponse) ProtoMessage() {}
 
 func (x *CreateCommentResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_ucm_proto_msgTypes[11]
+	mi := &file_ucm_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -693,7 +774,7 @@ func (x *CreateCommentResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateCommentResponse.ProtoReflect.Descriptor instead.
 func (*CreateCommentResponse) Descriptor() ([]byte, []int) {
-	return file_ucm_proto_rawDescGZIP(), []int{11}
+	return file_ucm_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *CreateCommentResponse) GetCommentId() int64 {
@@ -713,7 +794,7 @@ type DeleteCommentRequest struct {
 
 func (x *DeleteCommentRequest) Reset() {
 	*x = DeleteCommentRequest{}
-	mi := &file_ucm_proto_msgTypes[12]
+	mi := &file_ucm_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -725,7 +806,7 @@ func (x *DeleteCommentRequest) String() string {
 func (*DeleteCommentRequest) ProtoMessage() {}
 
 func (x *DeleteCommentRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_ucm_proto_msgTypes[12]
+	mi := &file_ucm_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -738,7 +819,7 @@ func (x *DeleteCommentRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteCommentRequest.ProtoReflect.Descriptor instead.
 func (*DeleteCommentRequest) Descriptor() ([]byte, []int) {
-	return file_ucm_proto_rawDescGZIP(), []int{12}
+	return file_ucm_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *DeleteCommentRequest) GetUserId() int64 {
@@ -766,7 +847,7 @@ type ListCommentsRequest struct {
 
 func (x *ListCommentsRequest) Reset() {
 	*x = ListCommentsRequest{}
-	mi := &file_ucm_proto_msgTypes[13]
+	mi := &file_ucm_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -778,7 +859,7 @@ func (x *ListCommentsRequest) String() string {
 func (*ListCommentsRequest) ProtoMessage() {}
 
 func (x *ListCommentsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_ucm_proto_msgTypes[13]
+	mi := &file_ucm_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -791,7 +872,7 @@ func (x *ListCommentsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListCommentsRequest.ProtoReflect.Descriptor instead.
 func (*ListCommentsRequest) Descriptor() ([]byte, []int) {
-	return file_ucm_proto_rawDescGZIP(), []int{13}
+	return file_ucm_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *ListCommentsRequest) GetCommentSectionId() int64 {
@@ -828,7 +909,7 @@ type CommentResponse struct {
 
 func (x *CommentResponse) Reset() {
 	*x = CommentResponse{}
-	mi := &file_ucm_proto_msgTypes[14]
+	mi := &file_ucm_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -840,7 +921,7 @@ func (x *CommentResponse) String() string {
 func (*CommentResponse) ProtoMessage() {}
 
 func (x *CommentResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_ucm_proto_msgTypes[14]
+	mi := &file_ucm_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -853,7 +934,7 @@ func (x *CommentResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CommentResponse.ProtoReflect.Descriptor instead.
 func (*CommentResponse) Descriptor() ([]byte, []int) {
-	return file_ucm_proto_rawDescGZIP(), []int{14}
+	return file_ucm_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *CommentResponse) GetId() int64 {
@@ -901,7 +982,7 @@ type ListCommentsResponse struct {
 
 func (x *ListCommentsResponse) Reset() {
 	*x = ListCommentsResponse{}
-	mi := &file_ucm_proto_msgTypes[15]
+	mi := &file_ucm_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -913,7 +994,7 @@ func (x *ListCommentsResponse) String() string {
 func (*ListCommentsResponse) ProtoMessage() {}
 
 func (x *ListCommentsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_ucm_proto_msgTypes[15]
+	mi := &file_ucm_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -926,7 +1007,7 @@ func (x *ListCommentsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListCommentsResponse.ProtoReflect.Descriptor instead.
 func (*ListCommentsResponse) Descriptor() ([]byte, []int) {
-	return file_ucm_proto_rawDescGZIP(), []int{15}
+	return file_ucm_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *ListCommentsResponse) GetComments() []*CommentResponse {
@@ -954,7 +1035,7 @@ type ListRepliesRequest struct {
 
 func (x *ListRepliesRequest) Reset() {
 	*x = ListRepliesRequest{}
-	mi := &file_ucm_proto_msgTypes[16]
+	mi := &file_ucm_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -966,7 +1047,7 @@ func (x *ListRepliesRequest) String() string {
 func (*ListRepliesRequest) ProtoMessage() {}
 
 func (x *ListRepliesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_ucm_proto_msgTypes[16]
+	mi := &file_ucm_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -979,7 +1060,7 @@ func (x *ListRepliesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListRepliesRequest.ProtoReflect.Descriptor instead.
 func (*ListRepliesRequest) Descriptor() ([]byte, []int) {
-	return file_ucm_proto_rawDescGZIP(), []int{16}
+	return file_ucm_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *ListRepliesRequest) GetRootCommentId() int64 {
@@ -1018,7 +1099,7 @@ type ReplyResponse struct {
 
 func (x *ReplyResponse) Reset() {
 	*x = ReplyResponse{}
-	mi := &file_ucm_proto_msgTypes[17]
+	mi := &file_ucm_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1030,7 +1111,7 @@ func (x *ReplyResponse) String() string {
 func (*ReplyResponse) ProtoMessage() {}
 
 func (x *ReplyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_ucm_proto_msgTypes[17]
+	mi := &file_ucm_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1043,7 +1124,7 @@ func (x *ReplyResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReplyResponse.ProtoReflect.Descriptor instead.
 func (*ReplyResponse) Descriptor() ([]byte, []int) {
-	return file_ucm_proto_rawDescGZIP(), []int{17}
+	return file_ucm_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *ReplyResponse) GetId() int64 {
@@ -1105,7 +1186,7 @@ type ListRepliesResponse struct {
 
 func (x *ListRepliesResponse) Reset() {
 	*x = ListRepliesResponse{}
-	mi := &file_ucm_proto_msgTypes[18]
+	mi := &file_ucm_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1117,7 +1198,7 @@ func (x *ListRepliesResponse) String() string {
 func (*ListRepliesResponse) ProtoMessage() {}
 
 func (x *ListRepliesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_ucm_proto_msgTypes[18]
+	mi := &file_ucm_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1130,7 +1211,7 @@ func (x *ListRepliesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListRepliesResponse.ProtoReflect.Descriptor instead.
 func (*ListRepliesResponse) Descriptor() ([]byte, []int) {
-	return file_ucm_proto_rawDescGZIP(), []int{18}
+	return file_ucm_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *ListRepliesResponse) GetReplies() []*ReplyResponse {
@@ -1160,7 +1241,7 @@ type ScoresStatisticsRequest struct {
 
 func (x *ScoresStatisticsRequest) Reset() {
 	*x = ScoresStatisticsRequest{}
-	mi := &file_ucm_proto_msgTypes[19]
+	mi := &file_ucm_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1172,7 +1253,7 @@ func (x *ScoresStatisticsRequest) String() string {
 func (*ScoresStatisticsRequest) ProtoMessage() {}
 
 func (x *ScoresStatisticsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_ucm_proto_msgTypes[19]
+	mi := &file_ucm_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1185,7 +1266,7 @@ func (x *ScoresStatisticsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ScoresStatisticsRequest.ProtoReflect.Descriptor instead.
 func (*ScoresStatisticsRequest) Descriptor() ([]byte, []int) {
-	return file_ucm_proto_rawDescGZIP(), []int{19}
+	return file_ucm_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *ScoresStatisticsRequest) GetData() isScoresStatisticsRequest_Data {
@@ -1238,7 +1319,7 @@ type File struct {
 
 func (x *File) Reset() {
 	*x = File{}
-	mi := &file_ucm_proto_msgTypes[20]
+	mi := &file_ucm_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1250,7 +1331,7 @@ func (x *File) String() string {
 func (*File) ProtoMessage() {}
 
 func (x *File) ProtoReflect() protoreflect.Message {
-	mi := &file_ucm_proto_msgTypes[20]
+	mi := &file_ucm_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1263,7 +1344,7 @@ func (x *File) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use File.ProtoReflect.Descriptor instead.
 func (*File) Descriptor() ([]byte, []int) {
-	return file_ucm_proto_rawDescGZIP(), []int{20}
+	return file_ucm_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *File) GetChunk() []byte {
@@ -1282,7 +1363,7 @@ type ScoresStatisticsResponse struct {
 
 func (x *ScoresStatisticsResponse) Reset() {
 	*x = ScoresStatisticsResponse{}
-	mi := &file_ucm_proto_msgTypes[21]
+	mi := &file_ucm_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1294,7 +1375,7 @@ func (x *ScoresStatisticsResponse) String() string {
 func (*ScoresStatisticsResponse) ProtoMessage() {}
 
 func (x *ScoresStatisticsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_ucm_proto_msgTypes[21]
+	mi := &file_ucm_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1307,7 +1388,7 @@ func (x *ScoresStatisticsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ScoresStatisticsResponse.ProtoReflect.Descriptor instead.
 func (*ScoresStatisticsResponse) Descriptor() ([]byte, []int) {
-	return file_ucm_proto_rawDescGZIP(), []int{21}
+	return file_ucm_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *ScoresStatisticsResponse) GetLink() string {
@@ -1332,7 +1413,10 @@ const file_ucm_proto_rawDesc = "" +
 	"\bpostedAt\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\bpostedAt\"^\n" +
 	"\x14ListArticlesResponse\x12,\n" +
 	"\barticles\x18\x01 \x03(\v2\x10.ArticleResponseR\barticles\x12\x18\n" +
-	"\ahasMore\x18\x02 \x01(\bR\ahasMore\"4\n" +
+	"\ahasMore\x18\x02 \x01(\bR\ahasMore\"\x1a\n" +
+	"\x18RecommendArticlesRequest\"I\n" +
+	"\x19RecommendArticlesResponse\x12,\n" +
+	"\barticles\x18\x01 \x03(\v2\x10.ArticleResponseR\barticles\"4\n" +
 	"\x14ArticleDetailRequest\x12\x1c\n" +
 	"\tarticleId\x18\x01 \x01(\x03R\tarticleId\"W\n" +
 	"\x15ArticleDetailResponse\x12$\n" +
@@ -1406,9 +1490,10 @@ const file_ucm_proto_rawDesc = "" +
 	"\x04File\x12\x14\n" +
 	"\x05chunk\x18\x01 \x01(\fR\x05chunk\".\n" +
 	"\x18ScoresStatisticsResponse\x12\x12\n" +
-	"\x04link\x18\x01 \x01(\tR\x04link2\xf0\x04\n" +
+	"\x04link\x18\x01 \x01(\tR\x04link2\xbe\x05\n" +
 	"\vUserContent\x12=\n" +
-	"\fListArticles\x12\x14.ListArticlesRequest\x1a\x15.ListArticlesResponse\"\x00\x12@\n" +
+	"\fListArticles\x12\x14.ListArticlesRequest\x1a\x15.ListArticlesResponse\"\x00\x12L\n" +
+	"\x11RecommendArticles\x12\x19.RecommendArticlesRequest\x1a\x1a.RecommendArticlesResponse\"\x00\x12@\n" +
 	"\rArticleDetail\x12\x15.ArticleDetailRequest\x1a\x16.ArticleDetailResponse\"\x00\x12C\n" +
 	"\x0eSearchArticles\x12\x16.SearchArticlesRequest\x1a\x17.SearchArticlesResponse\"\x00\x12O\n" +
 	"\x12CommentSectionInfo\x12\x1a.CommentSectionInfoRequest\x1a\x1b.CommentSectionInfoResponse\"\x00\x12@\n" +
@@ -1430,67 +1515,72 @@ func file_ucm_proto_rawDescGZIP() []byte {
 	return file_ucm_proto_rawDescData
 }
 
-var file_ucm_proto_msgTypes = make([]protoimpl.MessageInfo, 22)
+var file_ucm_proto_msgTypes = make([]protoimpl.MessageInfo, 24)
 var file_ucm_proto_goTypes = []any{
 	(*ListArticlesRequest)(nil),        // 0: ListArticlesRequest
 	(*ArticleResponse)(nil),            // 1: ArticleResponse
 	(*ListArticlesResponse)(nil),       // 2: ListArticlesResponse
-	(*ArticleDetailRequest)(nil),       // 3: ArticleDetailRequest
-	(*ArticleDetailResponse)(nil),      // 4: ArticleDetailResponse
-	(*SearchArticlesRequest)(nil),      // 5: SearchArticlesRequest
-	(*SearchArticleResponse)(nil),      // 6: SearchArticleResponse
-	(*SearchArticlesResponse)(nil),     // 7: SearchArticlesResponse
-	(*CommentSectionInfoRequest)(nil),  // 8: CommentSectionInfoRequest
-	(*CommentSectionInfoResponse)(nil), // 9: CommentSectionInfoResponse
-	(*CreateCommentRequest)(nil),       // 10: CreateCommentRequest
-	(*CreateCommentResponse)(nil),      // 11: CreateCommentResponse
-	(*DeleteCommentRequest)(nil),       // 12: DeleteCommentRequest
-	(*ListCommentsRequest)(nil),        // 13: ListCommentsRequest
-	(*CommentResponse)(nil),            // 14: CommentResponse
-	(*ListCommentsResponse)(nil),       // 15: ListCommentsResponse
-	(*ListRepliesRequest)(nil),         // 16: ListRepliesRequest
-	(*ReplyResponse)(nil),              // 17: ReplyResponse
-	(*ListRepliesResponse)(nil),        // 18: ListRepliesResponse
-	(*ScoresStatisticsRequest)(nil),    // 19: ScoresStatisticsRequest
-	(*File)(nil),                       // 20: File
-	(*ScoresStatisticsResponse)(nil),   // 21: ScoresStatisticsResponse
-	(*timestamppb.Timestamp)(nil),      // 22: google.protobuf.Timestamp
-	(*emptypb.Empty)(nil),              // 23: google.protobuf.Empty
+	(*RecommendArticlesRequest)(nil),   // 3: RecommendArticlesRequest
+	(*RecommendArticlesResponse)(nil),  // 4: RecommendArticlesResponse
+	(*ArticleDetailRequest)(nil),       // 5: ArticleDetailRequest
+	(*ArticleDetailResponse)(nil),      // 6: ArticleDetailResponse
+	(*SearchArticlesRequest)(nil),      // 7: SearchArticlesRequest
+	(*SearchArticleResponse)(nil),      // 8: SearchArticleResponse
+	(*SearchArticlesResponse)(nil),     // 9: SearchArticlesResponse
+	(*CommentSectionInfoRequest)(nil),  // 10: CommentSectionInfoRequest
+	(*CommentSectionInfoResponse)(nil), // 11: CommentSectionInfoResponse
+	(*CreateCommentRequest)(nil),       // 12: CreateCommentRequest
+	(*CreateCommentResponse)(nil),      // 13: CreateCommentResponse
+	(*DeleteCommentRequest)(nil),       // 14: DeleteCommentRequest
+	(*ListCommentsRequest)(nil),        // 15: ListCommentsRequest
+	(*CommentResponse)(nil),            // 16: CommentResponse
+	(*ListCommentsResponse)(nil),       // 17: ListCommentsResponse
+	(*ListRepliesRequest)(nil),         // 18: ListRepliesRequest
+	(*ReplyResponse)(nil),              // 19: ReplyResponse
+	(*ListRepliesResponse)(nil),        // 20: ListRepliesResponse
+	(*ScoresStatisticsRequest)(nil),    // 21: ScoresStatisticsRequest
+	(*File)(nil),                       // 22: File
+	(*ScoresStatisticsResponse)(nil),   // 23: ScoresStatisticsResponse
+	(*timestamppb.Timestamp)(nil),      // 24: google.protobuf.Timestamp
+	(*emptypb.Empty)(nil),              // 25: google.protobuf.Empty
 }
 var file_ucm_proto_depIdxs = []int32{
-	22, // 0: ArticleResponse.postedAt:type_name -> google.protobuf.Timestamp
+	24, // 0: ArticleResponse.postedAt:type_name -> google.protobuf.Timestamp
 	1,  // 1: ListArticlesResponse.articles:type_name -> ArticleResponse
-	1,  // 2: ArticleDetailResponse.info:type_name -> ArticleResponse
-	22, // 3: SearchArticleResponse.postedAt:type_name -> google.protobuf.Timestamp
-	6,  // 4: SearchArticlesResponse.articles:type_name -> SearchArticleResponse
-	22, // 5: CommentResponse.postedAt:type_name -> google.protobuf.Timestamp
-	14, // 6: ListCommentsResponse.comments:type_name -> CommentResponse
-	22, // 7: ReplyResponse.postedAt:type_name -> google.protobuf.Timestamp
-	17, // 8: ListRepliesResponse.replies:type_name -> ReplyResponse
-	20, // 9: ScoresStatisticsRequest.file:type_name -> File
-	0,  // 10: UserContent.ListArticles:input_type -> ListArticlesRequest
-	3,  // 11: UserContent.ArticleDetail:input_type -> ArticleDetailRequest
-	5,  // 12: UserContent.SearchArticles:input_type -> SearchArticlesRequest
-	8,  // 13: UserContent.CommentSectionInfo:input_type -> CommentSectionInfoRequest
-	10, // 14: UserContent.CreateComment:input_type -> CreateCommentRequest
-	12, // 15: UserContent.DeleteComment:input_type -> DeleteCommentRequest
-	13, // 16: UserContent.ListComments:input_type -> ListCommentsRequest
-	16, // 17: UserContent.ListReplies:input_type -> ListRepliesRequest
-	19, // 18: UserContent.ScoresStatistics:input_type -> ScoresStatisticsRequest
-	2,  // 19: UserContent.ListArticles:output_type -> ListArticlesResponse
-	4,  // 20: UserContent.ArticleDetail:output_type -> ArticleDetailResponse
-	7,  // 21: UserContent.SearchArticles:output_type -> SearchArticlesResponse
-	9,  // 22: UserContent.CommentSectionInfo:output_type -> CommentSectionInfoResponse
-	11, // 23: UserContent.CreateComment:output_type -> CreateCommentResponse
-	23, // 24: UserContent.DeleteComment:output_type -> google.protobuf.Empty
-	15, // 25: UserContent.ListComments:output_type -> ListCommentsResponse
-	18, // 26: UserContent.ListReplies:output_type -> ListRepliesResponse
-	21, // 27: UserContent.ScoresStatistics:output_type -> ScoresStatisticsResponse
-	19, // [19:28] is the sub-list for method output_type
-	10, // [10:19] is the sub-list for method input_type
-	10, // [10:10] is the sub-list for extension type_name
-	10, // [10:10] is the sub-list for extension extendee
-	0,  // [0:10] is the sub-list for field type_name
+	1,  // 2: RecommendArticlesResponse.articles:type_name -> ArticleResponse
+	1,  // 3: ArticleDetailResponse.info:type_name -> ArticleResponse
+	24, // 4: SearchArticleResponse.postedAt:type_name -> google.protobuf.Timestamp
+	8,  // 5: SearchArticlesResponse.articles:type_name -> SearchArticleResponse
+	24, // 6: CommentResponse.postedAt:type_name -> google.protobuf.Timestamp
+	16, // 7: ListCommentsResponse.comments:type_name -> CommentResponse
+	24, // 8: ReplyResponse.postedAt:type_name -> google.protobuf.Timestamp
+	19, // 9: ListRepliesResponse.replies:type_name -> ReplyResponse
+	22, // 10: ScoresStatisticsRequest.file:type_name -> File
+	0,  // 11: UserContent.ListArticles:input_type -> ListArticlesRequest
+	3,  // 12: UserContent.RecommendArticles:input_type -> RecommendArticlesRequest
+	5,  // 13: UserContent.ArticleDetail:input_type -> ArticleDetailRequest
+	7,  // 14: UserContent.SearchArticles:input_type -> SearchArticlesRequest
+	10, // 15: UserContent.CommentSectionInfo:input_type -> CommentSectionInfoRequest
+	12, // 16: UserContent.CreateComment:input_type -> CreateCommentRequest
+	14, // 17: UserContent.DeleteComment:input_type -> DeleteCommentRequest
+	15, // 18: UserContent.ListComments:input_type -> ListCommentsRequest
+	18, // 19: UserContent.ListReplies:input_type -> ListRepliesRequest
+	21, // 20: UserContent.ScoresStatistics:input_type -> ScoresStatisticsRequest
+	2,  // 21: UserContent.ListArticles:output_type -> ListArticlesResponse
+	4,  // 22: UserContent.RecommendArticles:output_type -> RecommendArticlesResponse
+	6,  // 23: UserContent.ArticleDetail:output_type -> ArticleDetailResponse
+	9,  // 24: UserContent.SearchArticles:output_type -> SearchArticlesResponse
+	11, // 25: UserContent.CommentSectionInfo:output_type -> CommentSectionInfoResponse
+	13, // 26: UserContent.CreateComment:output_type -> CreateCommentResponse
+	25, // 27: UserContent.DeleteComment:output_type -> google.protobuf.Empty
+	17, // 28: UserContent.ListComments:output_type -> ListCommentsResponse
+	20, // 29: UserContent.ListReplies:output_type -> ListRepliesResponse
+	23, // 30: UserContent.ScoresStatistics:output_type -> ScoresStatisticsResponse
+	21, // [21:31] is the sub-list for method output_type
+	11, // [11:21] is the sub-list for method input_type
+	11, // [11:11] is the sub-list for extension type_name
+	11, // [11:11] is the sub-list for extension extendee
+	0,  // [0:11] is the sub-list for field type_name
 }
 
 func init() { file_ucm_proto_init() }
@@ -1498,9 +1588,9 @@ func file_ucm_proto_init() {
 	if File_ucm_proto != nil {
 		return
 	}
-	file_ucm_proto_msgTypes[10].OneofWrappers = []any{}
-	file_ucm_proto_msgTypes[17].OneofWrappers = []any{}
-	file_ucm_proto_msgTypes[19].OneofWrappers = []any{
+	file_ucm_proto_msgTypes[12].OneofWrappers = []any{}
+	file_ucm_proto_msgTypes[19].OneofWrappers = []any{}
+	file_ucm_proto_msgTypes[21].OneofWrappers = []any{
 		(*ScoresStatisticsRequest_Filename)(nil),
 		(*ScoresStatisticsRequest_File)(nil),
 	}
@@ -1510,7 +1600,7 @@ func file_ucm_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_ucm_proto_rawDesc), len(file_ucm_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   22,
+			NumMessages:   24,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
